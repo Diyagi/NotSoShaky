@@ -1,18 +1,16 @@
-ModName, ModVersion = "Not So Shaky", "1.0.0"
+ModName, ModVersion = "Not So Shaky", "1.0.1"
 
-local preId, posId = nil, nil
-
-preId, posId = RegisterHook("/Script/Engine.PlayerController:ClientRestart", function()
-    UnregisterHook("/Script/Engine.PlayerController:ClientRestart", preId, posId)
+LoopAsync(1000, function()
+    local camShake = StaticFindObject("/Game/SurvivalGameKitV2/Blueprints/Other/CameraShake/PlayerHitCamShake.Default__PlayerHitCamShake_C")
+    if not camShake:IsValid() then return false end
+    
     ExecuteWithDelay(2000, function()
         ExecuteInGameThread(function()
-            local camShake = StaticFindObject("/Game/SurvivalGameKitV2/Blueprints/Other/CameraShake/PlayerHitCamShake.Default__PlayerHitCamShake_C")
-
             camShake.ShakeScale = 1.0
             camShake.OscillationDuration = 0.2
             camShake.OscillationBlendInTime = 0.02
             camShake.OscillationBlendOutTime = 0.08
-
+            
             camShake.RotOscillation = {
                 Pitch = {
                     Amplitude = 1.5,
@@ -33,7 +31,7 @@ preId, posId = RegisterHook("/Script/Engine.PlayerController:ClientRestart", fun
                     Waveform = 0
                 }
             }
-
+            
             camShake.LocOscillation = {
                 X = {
                     Amplitude = 1.2,
@@ -54,18 +52,22 @@ preId, posId = RegisterHook("/Script/Engine.PlayerController:ClientRestart", fun
                     Waveform = 0
                 }
             }
-
+            
             camShake.FOVOscillation = {
                 Amplitude = 0.0,
                 Frequency = 0.0,
                 InitialOffset = 0,
                 Waveform = 0
             }
-
+            
             camShake.AnimPlayRate = 1.0
             camShake.AnimScale = 1.0
             camShake.AnimBlendInTime = 0.0
             camShake.AnimBlendOutTime = 0.05
+
+            print("Painkiller is active!")
         end)
     end)
+    
+    return true
 end)
