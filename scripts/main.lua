@@ -1,11 +1,15 @@
-ModName, ModVersion = "Not So Shaky", "1.0.1"
+ModName, ModVersion = "Not So Shaky", "1.0.2"
 
-LoopAsync(1000, function()
-    local camShake = StaticFindObject("/Game/SurvivalGameKitV2/Blueprints/Other/CameraShake/PlayerHitCamShake.Default__PlayerHitCamShake_C")
-    if not camShake:IsValid() then return false end
+LoopAsync(2000, function()
+    local sgkController = StaticFindObject("/Game/SurvivalGameKitV2/Blueprints/Characters/BP_SGKController.BP_SGKController_C")
+    if not sgkController:IsValid() then return false end
+    
     
     ExecuteWithDelay(2000, function()
-        ExecuteInGameThread(function()
+        RegisterHook("/Game/SurvivalGameKitV2/Blueprints/Characters/BP_SGKController.BP_SGKController_C:ReceiveBeginPlay", function(self)
+            local camShake = StaticFindObject("/Game/SurvivalGameKitV2/Blueprints/Other/CameraShake/PlayerHitCamShake.Default__PlayerHitCamShake_C")
+            if not camShake:IsValid() then return false end
+            
             camShake.ShakeScale = 1.0
             camShake.OscillationDuration = 0.2
             camShake.OscillationBlendInTime = 0.02
@@ -64,7 +68,7 @@ LoopAsync(1000, function()
             camShake.AnimScale = 1.0
             camShake.AnimBlendInTime = 0.0
             camShake.AnimBlendOutTime = 0.05
-
+            
             print("Painkiller is active!")
         end)
     end)
